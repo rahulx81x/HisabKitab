@@ -15,5 +15,7 @@ public partial class Transaction
 
     public string Type { get; set; } = null!;
 
+    public string? Remarks { get; set; }
+
     public virtual User User { get; set; } = null!;
 }

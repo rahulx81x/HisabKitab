@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace HisabKitabDAL.Models;
@@ -19,19 +21,20 @@ public partial class HisabKitabDbContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        var builder = new ConfigurationBuilder()
-                       .SetBasePath(Directory.GetCurrentDirectory())
-                       .AddJsonFile("appsettings.json");
-        var config = builder.Build();
-        var connectionString = config.GetConnectionString("HisabKitabDBConnectionString");
+    
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+         => optionsBuilder.UseSqlServer("Data Source =(localdb)\\MSSQLLocalDB;Initial Catalog=HisabKitabDB;Integrated Security=true");
+        //var builder = new ConfigurationBuilder()
+        //                 .SetBasePath(Directory.GetCurrentDirectory())
+        //                 .AddJsonFile("appsettings.json");
+        //var config = builder.Build();
+        //var connectionString = config.GetConnectionString("HisabKitabDBConnectionString");
 
-        if (!optionsBuilder.IsConfigured)
-        {
-           optionsBuilder.UseSqlServer(connectionString); 
-        }
-    }
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+        //optionsBuilder.UseSqlServer(connectionString);
+
+    
+protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Transaction>(entity =>
         {
@@ -39,6 +42,9 @@ public partial class HisabKitabDbContext : DbContext
 
             entity.Property(e => e.Amount).HasColumnType("decimal(12, 2)");
             entity.Property(e => e.Date).HasColumnType("datetime");
+            entity.Property(e => e.Remarks)
+                .HasMaxLength(100)
+                .IsUnicode(false);
             entity.Property(e => e.Type)
                 .HasMaxLength(1)
                 .IsUnicode(false)
@@ -47,14 +53,14 @@ public partial class HisabKitabDbContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.Transactions)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Transacti__UserI__3D5E1FD2");
+                .HasConstraintName("FK__Transacti__UserI__398D8EEE");
         });
 
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.UserId).HasName("pk_userId");
 
-            entity.HasIndex(e => e.UserName, "UQ__Users__C9F284569A401933").IsUnique();
+            entity.HasIndex(e => e.UserName, "UQ__Users__C9F28456440679C1").IsUnique();
 
             entity.Property(e => e.UserId).HasColumnName("UserID");
             entity.Property(e => e.UserName)

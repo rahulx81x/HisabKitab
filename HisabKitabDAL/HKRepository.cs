@@ -8,7 +8,7 @@ namespace HisabKitabDAL
         HisabKitabDbContext context;
         public HKRepository()
         {
-            context = new HisabKitabDbContext(); 
+            context = new HisabKitabDbContext();
         }
 
         public string GetBalance(int userId)
@@ -16,7 +16,7 @@ namespace HisabKitabDAL
             decimal balance = 0;
             try
             {
-                    var tranList = (from tran in context.Transactions select tran).ToList();
+                var tranList = (from tran in context.Transactions select tran).ToList();
                 foreach (var tran in tranList)
                 {
                     if (tran.Type == "C")
@@ -33,9 +33,9 @@ namespace HisabKitabDAL
             catch
             {
                 string errMessage = "Error";
-                return errMessage  ;
+                return errMessage;
             }
-           
+
         }
         public List<Transaction>? GetAllTransaction(int UserId)
         {
@@ -53,7 +53,7 @@ namespace HisabKitabDAL
         {
             try
             {
-                var tranList = (from tran in context.Transactions where tran.Type=="C" select tran).ToList();
+                var tranList = (from tran in context.Transactions where tran.Type == "C" select tran).ToList();
                 return tranList;
             }
             catch
@@ -77,8 +77,8 @@ namespace HisabKitabDAL
         public bool AddUser(string username, string password)
         {
             User user = new User();
-            user.UserName= username;
-            user.UserPassword= password;
+            user.UserName = username;
+            user.UserPassword = password;
             try
             {
                 context.Users.Add(user);
@@ -130,13 +130,14 @@ namespace HisabKitabDAL
         //    } 
         #endregion
 
-        public bool AddTran(int userId, DateTime date, decimal amount, string type)
+        public bool AddTran(int userId, DateTime date, decimal amount, string type,string remark)
         {
             Transaction tran = new Transaction();
             tran.UserId = userId;
             tran.Date = date;
             tran.Amount = amount;
             tran.Type = type;
+            tran.Remarks = remark;
             try
             {
                 context.Transactions.Add(tran);
@@ -150,17 +151,22 @@ namespace HisabKitabDAL
 
         }
 
-        public bool CheckUserPassword(string username,string password)
+        public bool CheckUserPassword(string username, string password)
         {
             try
             {
-                var userpwd = (from user in context.Users where user.UserName == username select user.UserPassword);
-                if(userpwd != null)
+                List<string> userpwd = (from user in context.Users where user.UserName == username select user.UserPassword).ToList();
+                if (userpwd != null)   
                 {
-                    if (userpwd.ToString() == password)
+                    foreach(var pwd in userpwd) 
                     {
-                        return true;
+                        if (pwd == password)
+                        {
+                            return true;
+                        }
                     }
+                    //string pwd = userpwd.ToString();
+                    
                 }
                 return false;
             }
@@ -168,10 +174,10 @@ namespace HisabKitabDAL
             {
                 return false;
             }
-            
+
         }
 
     }
-        
-    
+
+
 }
