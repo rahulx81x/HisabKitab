@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+<form asp-action="CheckLogin">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                &nbsp;
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-9">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-9 text-center">
+                                <h2>Log in</h2>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 text-right">
+                                User Name:
+                            </div>
+                            <div class="col-md-6">
+                                @Html.TextBox("name")
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-3 text-right">
+                                Password:
+                            </div>
+                            <div class="col-md-6">
+                                @Html.Password("pwd")
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-3 text-right">
+                                &nbsp;
+                            </div>
+                            <div class="col-md-6">
+                                <input type="submit" class="btn" value="Login" id="btnLogin" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
