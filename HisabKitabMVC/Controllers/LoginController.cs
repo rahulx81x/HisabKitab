@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using HisabKitabDAL;
+
 
 namespace HisabKitabMVC.Controllers
 {
@@ -22,7 +24,9 @@ namespace HisabKitabMVC.Controllers
                 bool result = repository.CheckUserPassword(name, pwd);
                 if (result)
                 {
-                    return RedirectToAction("Index", "Home");
+                    //Session["userName"] = name;
+                    HttpContext.Session.SetString("userName",name);
+                    return RedirectToAction("Index", "User");
                 }
                 else
                 {
