@@ -92,44 +92,44 @@ namespace HisabKitabDAL
         }
 
         #region Separate functions for adding credit and debit logs
-        //public bool AddCredit(int userId,DateTime date,decimal amount)
-        //{
-        //    Transaction tran = new Transaction();
-        //    tran.UserId= userId;
-        //    tran.Date= date;
-        //    tran.Amount= amount;
-        //    tran.Type = "C";
-        //    try
-        //    {
-        //        context.Transactions.Add(tran);
-        //        context.SaveChanges();
-        //        return true;
-        //    }
-        //    catch
-        //    {
-        //        return false;
-        //    }
+        public bool AddCredit(int userId, DateTime date, decimal amount)
+        {
+            Transaction tran = new Transaction();
+            tran.UserId = userId;
+            tran.Date = date;
+            tran.Amount = amount;
+            tran.Type = "C";
+            try
+            {
+                context.Transactions.Add(tran);
+                context.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
 
-        //}
-        //public bool AddDebit(int userId, DateTime date, decimal amount)
-        //{
-        //    Transaction tran = new Transaction();
-        //    tran.UserId = userId;
-        //    tran.Date = date;
-        //    tran.Amount = amount;
-        //    tran.Type = "D";
-        //    try
-        //    {
-        //        context.Transactions.Add(tran);
-        //        context.SaveChanges();
-        //        return true;
-        //    }
-        //    catch
-        //    {
-        //        return false;
-        //    } 
-        #endregion
-
+        }
+        public bool AddDebit(int userId, DateTime date, decimal amount)
+        {
+            Transaction tran = new Transaction();
+            tran.UserId = userId;
+            tran.Date = date;
+            tran.Amount = amount;
+            tran.Type = "D";
+            try
+            {
+                context.Transactions.Add(tran);
+                context.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+            #endregion
+        }
         public bool AddTran(int userId, DateTime date, decimal amount, string type,string remark)
         {
             Transaction tran = new Transaction();
