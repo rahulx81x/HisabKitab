@@ -3,9 +3,20 @@
     ViewData["Title"] = "Index";
 }
 
-
+<div>
+    user Id: @ViewBag.userId
+</div>
 <div class="text-center">
     <h1>Welcome   @ViewBag.user</h1>
-    
+    <p>
+        Your current balance should be @ViewBag.balance
+    </p>
+</div>
+
+<div class="text-center">
+    <div>
+        <a asp-action="AddTransaction" asp-controller="User">Add a new Transaction</a>
+    </div>
+
 </div>
 
