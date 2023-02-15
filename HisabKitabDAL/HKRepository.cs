@@ -16,7 +16,7 @@ namespace HisabKitabDAL
             decimal balance = 0;
             try
             {
-                var tranList = (from tran in context.Transactions select tran).ToList();
+                var tranList = (from tran in context.Transactions where tran.UserId==userId select tran ).ToList();
                 foreach (var tran in tranList)
                 {
                     if (tran.Type == "C")
@@ -30,8 +30,9 @@ namespace HisabKitabDAL
                 }
                 return balance.ToString();
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 string errMessage = "Error";
                 return errMessage;
             }
@@ -44,8 +45,9 @@ namespace HisabKitabDAL
                 var tranList = (from tran in context.Transactions select tran).ToList();
                 return tranList;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return null;
             }
         }
@@ -56,8 +58,9 @@ namespace HisabKitabDAL
                 var tranList = (from tran in context.Transactions where tran.Type == "C" select tran).ToList();
                 return tranList;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return null;
             }
         }
@@ -68,8 +71,9 @@ namespace HisabKitabDAL
                 var tranList = (from tran in context.Transactions where tran.Type == "D" select tran).ToList();
                 return tranList;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return null;
             }
         }
@@ -85,8 +89,9 @@ namespace HisabKitabDAL
                 context.SaveChanges();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return false;
             }
         }
@@ -105,8 +110,9 @@ namespace HisabKitabDAL
                 context.SaveChanges();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return false;
             }
 
@@ -124,8 +130,9 @@ namespace HisabKitabDAL
                 context.SaveChanges();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return false;
             }
             #endregion
@@ -144,8 +151,9 @@ namespace HisabKitabDAL
                 context.SaveChanges();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message+"inside repo addtran");
                 return false;
             }
 
@@ -170,9 +178,29 @@ namespace HisabKitabDAL
                 }
                 return false;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return false;
+            }
+
+        }
+        public int GetUserId(string username)
+        {
+            try
+            {
+                List<int> userId =(from user in context.Users where user.UserName == username select user.UserId).ToList();
+                if (userId != null)
+                {
+                    return userId[0];
+
+                }
+                return 0;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return 0;
             }
 
         }
