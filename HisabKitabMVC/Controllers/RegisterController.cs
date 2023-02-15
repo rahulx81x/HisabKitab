@@ -29,8 +29,9 @@ namespace HisabKitabMVC.Controllers
                 }
 
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return RedirectToAction("Index", "Register");
             }
 
