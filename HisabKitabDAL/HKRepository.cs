@@ -38,11 +38,11 @@ namespace HisabKitabDAL
             }
 
         }
-        public List<Transaction>? GetAllTransaction(int UserId)
+        public List<Transaction>? GetAllTransaction(int userId)
         {
             try
             {
-                var tranList = (from tran in context.Transactions select tran).ToList();
+                var tranList = (from tran in context.Transactions where tran.UserId == userId select tran).ToList();
                 return tranList;
             }
             catch (Exception ex)
@@ -51,11 +51,11 @@ namespace HisabKitabDAL
                 return null;
             }
         }
-        public List<Transaction>? GetCreditTransaction(int UserId)
+        public List<Transaction>? GetCreditTransaction(int userId)
         {
             try
             {
-                var tranList = (from tran in context.Transactions where tran.Type == "C" select tran).ToList();
+                var tranList = (from tran in context.Transactions where (tran.Type == "C" && tran.UserId == userId) select tran).ToList();
                 return tranList;
             }
             catch (Exception ex)
@@ -64,11 +64,11 @@ namespace HisabKitabDAL
                 return null;
             }
         }
-        public List<Transaction>? GetDebitTransaction(int UserId)
+        public List<Transaction>? GetDebitTransaction(int userId)
         {
             try
             {
-                var tranList = (from tran in context.Transactions where tran.Type == "D" select tran).ToList();
+                var tranList = (from tran in context.Transactions where (tran.Type == "D" && tran.UserId == userId) select tran).ToList();
                 return tranList;
             }
             catch (Exception ex)
