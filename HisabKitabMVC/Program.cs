@@ -1,5 +1,6 @@
 using HisabKitabDAL;
 using HisabKitabDAL.Models;
+using HisabKitabMVC.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<HisabKitabDbContext>(option => option.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=HisabKitabDB;Trusted_Connection=True;"));
 builder.Services.AddSession();
+builder.Services.AddAutoMapper(x => x.AddProfile(new HKMapper()));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,15 +1,20 @@
 ﻿using HisabKitabDAL;
+using HisabKitabDAL.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using NuGet.Protocol.Core.Types;
+using AutoMapper;
 
 namespace HisabKitabMVC.Controllers
 {
     public class UserController : Controller
     {
         HKRepository repository;
-        public UserController()
+        private readonly IMapper _mapper;
+        public UserController(IMapper mapper)
         {
-            repository = new HKRepository(); 
+            repository = new HKRepository();
+            _mapper = mapper;
         }
 
         public IActionResult Index()
@@ -36,7 +41,7 @@ namespace HisabKitabMVC.Controllers
             {
                 string user = HttpContext.Session.GetString("userName");
                 int userId = repository.GetUserId(user);
-                bool res = repository.AddTran(userId, tran.Date, tran.Amount, tran.Type.ToString(), tran.Remarks=" ");
+                bool res = repository.AddTran(userId, tran.Date, tran.Amount, tran.Type.ToString(), tran.Remarks);
                 if (res)
                 {
                     return RedirectToAction("Index");
@@ -45,9 +50,29 @@ namespace HisabKitabMVC.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message+" in User Controllr,AddTran");
+                Console.WriteLine(ex.Message + " in User Controllr,AddTran");
                 return RedirectToAction("AddTransaction");
             }
         }
+        public ActionResult ViewTransaction()
+        {
+            string user = HttpContext.Session.GetString("userName");
+            int userId = repository.GetUserId(user);
+            List<Transaction> lstTranDAL = repository.GetAllTransaction(userId);
+            List<Models.Transaction> lstTranMVC = new List<Models.Transaction>();
+            try
+            {
+                foreach (var item in lstTranDAL)
+                {
+                    lstTranMVC.Add(_mapper.Map<Models.Transaction>(item));
+                }
+                return View(lstTranMVC);
+            }
+            catch
+            {
+                return View("Error");
+            }
+        }
+
     }
 }
