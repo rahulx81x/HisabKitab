@@ -17,3 +17,4 @@ Amount DECIMAL(12,2) NOT NULL,
 [Type] CHAR NOT NULL CONSTRAINT chk_type check(type in ('C','D')), --C for credit and D for Debit
 [Remarks] VARCHAR(100)
 )
+go
